@@ -19,7 +19,7 @@ Windows (PowerShell):
 powershell -c "irm https://releases.herdr.dev/core/install.ps1 | iex"
 ```
 
-Builds are available for Linux and macOS on x86_64 and aarch64, and Windows on x86_64.
+Builds are available for Linux, macOS, and Windows on x86_64 and aarch64.
 Linux builds are static. On Windows, templates and quoted shell commands need `sh` on PATH, such as Git for Windows provides.
 
 Run `hc update` to update. Running terminals keep running.
