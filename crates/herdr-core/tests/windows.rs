@@ -584,8 +584,9 @@ fn exec_returns_exact_bytes_and_ends_what_it_started_at_its_timeout() {
     assert_eq!((out.stdout.as_slice(), out.status.code()), (&b"a\tb\r\n"[..], Some(3)), "cmd's line, tab kept");
 
     let pid_file = s.root.join("exec-pid.txt");
-    let child =
-        s.file("exec.ps1", &format!("$PID | Out-File -Encoding ascii '{}'; Start-Sleep 60", pid_file.display()));
+    // Keep the child alive past the timeout, including the slow PowerShell allowance.
+    let child = s
+        .file("exec.ps1", &format!("$PID | Out-File -Encoding ascii '{}'; Start-Sleep {}", pid_file.display(), ps(60)));
     let (code, _) =
         s.out(&["exec", "--timeout", &ps(5).to_string(), "cmd", "/c", &format!("powershell -NoProfile -File {child}")]);
     assert_eq!(code, 124);
